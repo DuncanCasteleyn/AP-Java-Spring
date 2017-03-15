@@ -1,7 +1,5 @@
 package com.infosupport.ap.exercise;
 
-import com.infosupport.ap.exercise.repositories.ClassRegistrationRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -13,9 +11,6 @@ public class Program {
     public static void main(String[] args) {
         SpringApplication.run(Program.class);
     }
-
-    @Autowired
-    ClassRegistrationRepository repo;
 
     @Bean
     CommandLineRunner runAtStartup() {

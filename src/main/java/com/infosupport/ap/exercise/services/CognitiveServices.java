@@ -4,7 +4,7 @@ import com.infosupport.ap.exercise.services.interceptors.HeaderRequestIntercepto
 import com.infosupport.ap.exercise.services.requests.IdentifyFacesRequest;
 import com.infosupport.ap.exercise.services.responses.DetectFaces;
 import com.infosupport.ap.exercise.services.responses.GetPerson;
-import com.infosupport.ap.exercise.services.responses.partial.Identification;
+import com.infosupport.ap.exercise.services.responses.Identification;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.ParameterizedTypeReference;
@@ -43,35 +43,17 @@ public class CognitiveServices {
         return response.getBody().stream().findFirst().orElseThrow(() -> new RuntimeException("Multiple faces are not supported"));
     }
 
+    //URL: https://westus.api.cognitive.microsoft.com/face/v1.0/identify
     public Identification identify(List<String> faceIds) {
         IdentifyFacesRequest request = new IdentifyFacesRequest(PERSON_GROUP, faceIds);
 
-        HttpHeaders requestHeaders = new HttpHeaders();
-        requestHeaders.set(KEY_HEADER, KEY);
-
-        HttpEntity<?> requestEntity = new HttpEntity<Object>(request,requestHeaders);
-
-        ParameterizedTypeReference<List<Identification>> type = new ParameterizedTypeReference<List<Identification>>() {
-        };
-
-        ResponseEntity<List<Identification>> response = restTemplate.exchange(BASEURL+"identify", HttpMethod.POST, requestEntity, type);
-        System.out.println(response);
-        return response.getBody().stream().findFirst().orElseThrow(() -> new RuntimeException("Multiple faces are not supported"));
+       //TODO Task 3B:
+        return new Identification();
     }
 
-    // https://westus.api.cognitive.microsoft.com/face/v1.0/persongroups/{personGroupId}/persons/{personId}
+    //URL https://westus.api.cognitive.microsoft.com/face/v1.0/persongroups/{personGroupId}/persons/{personId}
     public GetPerson getPerson(String personId) {
-        HttpHeaders requestHeaders = new HttpHeaders();
-        requestHeaders.set(KEY_HEADER, KEY);
-
-        HttpEntity<?> requestEntity = new HttpEntity<Object>(personId,requestHeaders);
-
-        String url = BASEURL + "persongroups/"+ PERSON_GROUP+"/persons/"+personId;
-
-
-        ResponseEntity<GetPerson> entity = restTemplate.getForEntity(url,GetPerson.class);
-        System.out.println(entity);
-        return entity.getBody();
+        return new GetPerson();
     }
 
     @Bean

@@ -1,4 +1,6 @@
-package com.infosupport.ap.exercise.services.responses.partial;
+package com.infosupport.ap.exercise.services.responses;
+
+import com.infosupport.ap.exercise.services.responses.partial.IdentificationCandidates;
 
 import java.util.List;
 
