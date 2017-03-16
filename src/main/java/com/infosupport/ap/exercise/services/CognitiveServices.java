@@ -6,10 +6,10 @@ import com.infosupport.ap.exercise.services.responses.DetectFaces;
 import com.infosupport.ap.exercise.services.responses.GetPerson;
 import com.infosupport.ap.exercise.services.responses.partial.Identification;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -21,22 +21,19 @@ import java.util.List;
 @Service
 public class CognitiveServices {
 
-    private final String BASEURL = "https://westus.api.cognitive.microsoft.com/face/v1.0/";
-    private final String KEY_HEADER = "Ocp-Apim-Subscription-Key";
-    private final String KEY = "6ff5ae598540491583a5ae9f11029697";
-    private final String PERSON_GROUP = "ap-java-spring-boot-one";
+    private final static String BASEURL = "https://westus.api.cognitive.microsoft.com/face/v1.0/";
+    private final static String KEY_HEADER = "Ocp-Apim-Subscription-Key";
 
-    private RestTemplate restTemplate;
+    @Value("${cognitiveservice.key}")
+    private String apiKey;
+    @Value("${cognitiveservice.persongroup}")
+    private String personGroup;
 
     @Autowired
-    public CognitiveServices(RestTemplate restTemplate) {
-        this.restTemplate = restTemplate;
-    }
+    RestTemplate restTemplate;
 
     public DetectFaces detect(byte[] encodedImage) {
-        HttpHeaders requestHeaders = new HttpHeaders();
-        requestHeaders.set(KEY_HEADER, KEY);
-        HttpEntity<?> requestEntity = new HttpEntity<Object>(encodedImage,requestHeaders);
+        HttpEntity<?> requestEntity = new HttpEntity<Object>(encodedImage);
 
         //IF return type is an Array, you need to wrap the return class like this :(
         ParameterizedTypeReference<List<DetectFaces>> type = new ParameterizedTypeReference<List<DetectFaces>>() {
@@ -48,12 +45,9 @@ public class CognitiveServices {
     }
 
     public Identification identify(List<String> faceIds) {
-        IdentifyFacesRequest request = new IdentifyFacesRequest(PERSON_GROUP, faceIds);
+        IdentifyFacesRequest request = new IdentifyFacesRequest(personGroup, faceIds);
 
-        HttpHeaders requestHeaders = new HttpHeaders();
-        requestHeaders.set(KEY_HEADER, KEY);
-
-        HttpEntity<?> requestEntity = new HttpEntity<Object>(request,requestHeaders);
+        HttpEntity<?> requestEntity = new HttpEntity<Object>(request);
 
         ParameterizedTypeReference<List<Identification>> type = new ParameterizedTypeReference<List<Identification>>() {
         };
@@ -65,10 +59,8 @@ public class CognitiveServices {
 
     // https://westus.api.cognitive.microsoft.com/face/v1.0/persongroups/{personGroupId}/persons/{personId}
     public GetPerson getPerson(String personId) {
-        HttpHeaders requestHeaders = new HttpHeaders();
-        requestHeaders.set(KEY_HEADER, KEY);
 
-        String url = BASEURL + "persongroups/"+ PERSON_GROUP+"/persons/"+personId;
+        String url = BASEURL + "persongroups/"+ personGroup+"/persons/"+personId;
 
 
         ResponseEntity<GetPerson> entity = restTemplate.getForEntity(url,GetPerson.class);
@@ -79,7 +71,7 @@ public class CognitiveServices {
     @Bean
     RestTemplate getRestTemplate() {
         RestTemplate template = new RestTemplate();
-        template.setInterceptors(Arrays.asList(new HeaderRequestInterceptor(KEY_HEADER, KEY)));
+        template.setInterceptors(Arrays.asList(new HeaderRequestInterceptor(KEY_HEADER, apiKey)));
         return template;
     }
 }

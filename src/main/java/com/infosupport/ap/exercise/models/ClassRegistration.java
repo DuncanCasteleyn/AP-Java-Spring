@@ -3,6 +3,7 @@ package com.infosupport.ap.exercise.models;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Entity
@@ -10,8 +11,9 @@ public class ClassRegistration {
     @Id
     @GeneratedValue
     private Long id;
-    @Length(min = 3)
+    @Length(min = 4)
     private String classname;
+    @NotNull
     private String lector;
     private String topic;
     private Boolean closed;
