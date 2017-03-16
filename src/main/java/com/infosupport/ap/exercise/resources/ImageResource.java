@@ -34,6 +34,6 @@ public class ImageResource {
         GetPerson person = faceAPI.getPerson(candidate.getPersonId());
 
         //TODO Task 4: create presence and repository, save and return
-        return null;
+        return new Presence();
     }
 }
