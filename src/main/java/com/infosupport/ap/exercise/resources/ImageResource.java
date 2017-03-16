@@ -9,11 +9,16 @@ import com.infosupport.ap.exercise.services.responses.GetPerson;
 import com.infosupport.ap.exercise.services.responses.partial.Identification;
 import com.infosupport.ap.exercise.services.responses.partial.IdentificationCandidates;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 import sun.misc.BASE64Decoder;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 
 @RestController
@@ -34,7 +39,7 @@ public class ImageResource {
         //Detecting person in image
         DetectFaces detectFace = faceAPI.detect(imageByte);
         Identification identification = faceAPI.identify(Arrays.asList(detectFace.getFaceId()));
-        IdentificationCandidates candidate = identification.getCandidates().get(0);
+        IdentificationCandidates candidate = Collections.max(identification.getCandidates(), Comparator.comparing(IdentificationCandidates::getConfidence));
         GetPerson person = faceAPI.getPerson(candidate.getPersonId());
 
         //create presence and repository
