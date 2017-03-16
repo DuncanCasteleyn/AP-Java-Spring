@@ -2,9 +2,10 @@ package com.infosupport.ap.exercise.models;
 
 import org.hibernate.validator.constraints.Length;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
-import java.util.List;
 
 @Entity
 public class ClassRegistration {
@@ -17,15 +18,11 @@ public class ClassRegistration {
     private String lector;
     private String topic;
     private Boolean closed;
-    @OneToMany
-    @JoinColumn(name="classId", referencedColumnName="id")
-    private List<Presence> presentStudents;
 
-    public ClassRegistration(String classname, String lector, String topic, List<Presence> presentStudents) {
+    public ClassRegistration(String classname, String lector, String topic) {
         this.classname = classname;
         this.lector = lector;
         this.topic = topic;
-        this.presentStudents = presentStudents;
         closed = false;
     }
 
@@ -54,13 +51,5 @@ public class ClassRegistration {
 
     public String getTopic() {
         return topic;
-    }
-
-    public List<Presence> getPresentStudents() {
-        return presentStudents;
-    }
-
-    public void setPresentStudents(List<Presence> presentStudents) {
-        this.presentStudents = presentStudents;
     }
 }
