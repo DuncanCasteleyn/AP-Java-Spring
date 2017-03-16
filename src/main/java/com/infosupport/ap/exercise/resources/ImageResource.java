@@ -39,6 +39,9 @@ public class ImageResource {
         //Detecting person in image
         DetectFaces detectFace = faceAPI.detect(imageByte);
         Identification identification = faceAPI.identify(Arrays.asList(detectFace.getFaceId()));
+        if(identification.getCandidates().isEmpty()) {
+            throw new RuntimeException("No Candidate found for the supplied face."); //SHOULD be improved with custom exception instead of the generic one!
+        }
         IdentificationCandidates candidate = Collections.max(identification.getCandidates(), Comparator.comparing(IdentificationCandidates::getConfidence));
         GetPerson person = faceAPI.getPerson(candidate.getPersonId());
 
