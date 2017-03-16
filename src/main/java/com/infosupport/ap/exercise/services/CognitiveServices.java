@@ -26,8 +26,12 @@ public class CognitiveServices {
     private final String KEY = "6ff5ae598540491583a5ae9f11029697";
     private final String PERSON_GROUP = "ap-java-spring-boot-one";
 
+    private RestTemplate restTemplate;
+
     @Autowired
-    RestTemplate restTemplate;
+    public CognitiveServices(RestTemplate restTemplate) {
+        this.restTemplate = restTemplate;
+    }
 
     public DetectFaces detect(byte[] encodedImage) {
         HttpHeaders requestHeaders = new HttpHeaders();
@@ -63,8 +67,6 @@ public class CognitiveServices {
     public GetPerson getPerson(String personId) {
         HttpHeaders requestHeaders = new HttpHeaders();
         requestHeaders.set(KEY_HEADER, KEY);
-
-        HttpEntity<?> requestEntity = new HttpEntity<Object>(personId,requestHeaders);
 
         String url = BASEURL + "persongroups/"+ PERSON_GROUP+"/persons/"+personId;
 
