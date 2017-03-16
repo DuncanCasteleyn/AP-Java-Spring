@@ -2,3 +2,6 @@ When running the Runnable-Application-Solution, you can override the default pro
 By default, it uses the first API key. If you want to use your own, you could run it as:
 
 java -jar Runnable-Application-Solution.jar --cognitiveservice.key=YOUR_KEY --cognitiveservice.persongroup=YOUR_PERSON_GROUP
+
+##Command line arguments override anything in the application.properties file with the same name.
+##The order in which properties are considered when running is listed here: https://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-external-config.html
