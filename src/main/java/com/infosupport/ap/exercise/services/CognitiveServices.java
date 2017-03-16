@@ -30,7 +30,7 @@ public class CognitiveServices {
     private String personGroup;
 
     @Autowired
-    RestTemplate restTemplate;
+    RestTemplate restTemplate; //With Spring Test, you can change the Autowiring so it injects a "Fake" restTemplate
 
     public DetectFaces detect(byte[] encodedImage) {
         HttpEntity<?> requestEntity = new HttpEntity<Object>(encodedImage);
